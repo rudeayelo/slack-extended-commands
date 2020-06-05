@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { Stack, Button, Text, Heading } from "@rudeland/ui";
+import { useAuth } from "src/providers/AuthProvider";
 
 const SlackIcon = () => (
   <svg
@@ -13,6 +13,7 @@ const SlackIcon = () => (
 );
 
 const Index = () => {
+  const { user } = useAuth();
   const { data, isLoading } = { data: true, isLoading: false };
 
   if (isLoading || !data) return null;
@@ -24,10 +25,12 @@ const Index = () => {
           <Heading>Slack Extended Commands</Heading>
         </Stack>
 
+        {user && <Text>User is logged in</Text>}
+
         <Button
           as="a"
           size="large"
-          href="https://slack.com/oauth/v2/authorize?client_id=628291344193.1148234540627&user_scope=chat:write,channels:history,groups:history,im:history,mpim:history,users.profile:write,users:write,dnd:write&scope=commands&redirect_uri=https://slack-extended-commands.now.sh/api/callback"
+          href="https://slack.com/oauth/v2/authorize?client_id=628291344193.1148234540627&user_scope=chat:write,channels:history,groups:history,im:history,mpim:history,users.profile:write,users:write,dnd:write&scope=commands&redirect_uri=https://9c9b8efabdc1.ngrok.io/api/callback"
           iconBefore={<SlackIcon />}
           style={{ textDecoration: "none" }}
         >
@@ -37,5 +40,12 @@ const Index = () => {
     </Stack>
   );
 };
+
+export async function getStaticProps(ctx) {
+  console.log("ctx.req.headers.cookie", ctx);
+  return {
+    props: {},
+  };
+}
 
 export default Index;

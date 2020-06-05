@@ -1,7 +1,10 @@
 import { WebClient } from "@slack/web-api";
+import { parse } from "cookie";
+import addYears from "date-fns/addYears";
 import { db } from "src/firebase-admin";
 import { USERS_COLLECTION, WORKSPACES_COLLECTION } from "src/constants";
 import { cors } from "src/utils/cors";
+import { cookies } from "src/utils/cookies";
 
 type OAuthV2Response = {
   ok: boolean;
@@ -28,7 +31,7 @@ type OAuthV2Response = {
 const clientId = process.env.SLACK_CLIENT_ID;
 const clientSecret = process.env.SLACK_CLIENT_SECRET;
 
-export default async (req, res) => {
+const handler = async (req, res) => {
   await cors(req, res);
 
   const { code, error } = req.query;
@@ -75,6 +78,20 @@ export default async (req, res) => {
     throw new Error(error);
   }
 
-  res.setHeader("Location", "https://" + req.headers["host"] + "/success");
-  res.status(303).end();
+  res.cookie(
+    "su",
+    JSON.stringify({
+      team_id: result.team.id,
+      user_id: result.authed_user.id,
+      access_token: result.authed_user.access_token,
+    }),
+    {
+      expires: addYears(new Date(), 1),
+      path: "/",
+    }
+  );
+  res.setHeader("Location", "/");
+  res.status(302).end();
 };
+
+export default cookies(handler);

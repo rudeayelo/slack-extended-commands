@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import { ThemeProvider } from "@rudeland/ui";
+import { AuthProvider } from "src/providers/AuthProvider";
 
 export default ({ Component, pageProps, router }) => (
   <>
@@ -18,7 +19,9 @@ export default ({ Component, pageProps, router }) => (
       <title>Slack Thread Commands</title>
     </Head>
     <ThemeProvider>
-      <Component {...pageProps} key={router.route} />
+      <AuthProvider>
+        <Component {...pageProps} key={router.route} />
+      </AuthProvider>
     </ThemeProvider>
   </>
 );
