@@ -162,7 +162,7 @@ const Index = () => {
           iconBefore={<SlackIcon />}
           style={{ textDecoration: "none" }}
         >
-          Connect to Slack
+          Add to Slack
         </Button>
       </Stack>
     </Stack>
