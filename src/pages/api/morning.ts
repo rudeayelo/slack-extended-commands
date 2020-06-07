@@ -1,13 +1,11 @@
+import { db } from "src/firebase-admin";
+import {
+  USERS_COLLECTION,
+  WORKSPACES_COLLECTION,
+  USER_INITIAL_SETTINGS,
+} from "src/constants";
 import { cors } from "src/utils/cors";
 import { SlackApiClient } from "src/slack-api";
-
-function randomGoodMorningMessage() {
-  const goodMorningMessages = ["morning", "moin", "good morning", "mornings"];
-
-  return goodMorningMessages[
-    Math.ceil(Math.random() * goodMorningMessages.length) - 1
-  ];
-}
 
 export default async (req, res) => {
   await cors(req, res);
@@ -16,16 +14,36 @@ export default async (req, res) => {
 
   const slackApi = await SlackApiClient({ userId: user_id, teamId: team_id });
 
+  const userDocRef = db
+    .collection(WORKSPACES_COLLECTION)
+    .doc(team_id)
+    .collection(USERS_COLLECTION)
+    .doc(user_id);
+  const userData = (await userDocRef.get()).data();
+
   /* ---------------------- Post message to the channel --------------------- */
 
+  async function randomMorningMessage() {
+    let { morningMessages } = await userData;
+    morningMessages = morningMessages
+      ? morningMessages.split(";")
+      : USER_INITIAL_SETTINGS.morningMessages.split(";");
+
+    return morningMessages[
+      Math.ceil(Math.random() * morningMessages.length) - 1
+    ];
+  }
+
   try {
+    const randomMorningText = await randomMorningMessage();
+
     await slackApi.chat.postMessage({
       channel: channel_id,
       as_user: true,
-      text: text || randomGoodMorningMessage(),
+      text: text || randomMorningText,
     });
   } catch (error) {
-    console.warn("--> ERROR posting the message", error);
+    console.error("--> ERROR posting the message", error);
     throw new Error(error);
   }
 

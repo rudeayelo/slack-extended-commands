@@ -1,5 +1,4 @@
 import { WebClient } from "@slack/web-api";
-import { parse } from "cookie";
 import addYears from "date-fns/addYears";
 import { db } from "src/firebase-admin";
 import { USERS_COLLECTION, WORKSPACES_COLLECTION } from "src/constants";
@@ -49,7 +48,7 @@ const handler = async (req, res) => {
       code,
     })
     .catch((error) => {
-      console.log("--> ERROR requesting oAuth:", error);
+      console.error("--> ERROR requesting oAuth:", error);
 
       res.setHeader("Location", "https://" + req.headers["host"] + "/error");
       res.status(303).end();

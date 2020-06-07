@@ -22,7 +22,7 @@ export const UserContext = React.createContext<UserContext>({
 const userReducer = (state, action) => ({ ...state, ...action });
 
 const AuthProvider = ({ children }) => {
-  const [user, dispatch] = React.useReducer(userReducer, {});
+  const [{ user }, dispatch] = React.useReducer(userReducer, {});
 
   const setUser = ({ id, teamId, token }: User) =>
     dispatch({ user: { id, teamId, token } });
