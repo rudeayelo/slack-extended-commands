@@ -158,7 +158,7 @@ const Index = () => {
         <Button
           as="a"
           size="large"
-          href="https://slack.com/oauth/v2/authorize?client_id=628291344193.1148234540627&user_scope=chat:write,channels:history,groups:history,im:history,mpim:history,users.profile:write,users:write,dnd:write&scope=commands&redirect_uri=https://9c9b8efabdc1.ngrok.io/api/callback"
+          href={`https://slack.com/oauth/v2/authorize?client_id=628291344193.1148234540627&user_scope=chat:write,channels:history,groups:history,im:history,mpim:history,users.profile:write,users:write,dnd:write&scope=commands&redirect_uri=https://${process.env.VERCEL_URL}/api/callback`}
           iconBefore={<SlackIcon />}
           style={{ textDecoration: "none" }}
         >
