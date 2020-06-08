@@ -142,9 +142,6 @@ const UserSettings = ({ user }) => {
 
 const Index = () => {
   const { user } = useAuth();
-  const { data, isLoading } = { data: true, isLoading: false };
-
-  if (isLoading || !data) return null;
 
   return (
     <Stack gap={10} direction="vertical" css={{ padding: 4, paddingTop: 8 }}>
@@ -153,17 +150,19 @@ const Index = () => {
           <Heading>Slack Extended Commands</Heading>
         </Stack>
 
-        {user && <UserSettings user={user} />}
-
-        <Button
-          as="a"
-          size="large"
-          href={`https://slack.com/oauth/v2/authorize?client_id=628291344193.1148234540627&user_scope=chat:write,channels:history,groups:history,im:history,mpim:history,users.profile:write,users:write,dnd:write&scope=commands&redirect_uri=https://${process.env.APP_URL}/api/callback`}
-          iconBefore={<SlackIcon />}
-          style={{ textDecoration: "none" }}
-        >
-          Add to Slack
-        </Button>
+        {user ? (
+          <UserSettings user={user} />
+        ) : (
+          <Button
+            as="a"
+            size="large"
+            href={`https://slack.com/oauth/v2/authorize?client_id=628291344193.1148234540627&user_scope=chat:write,channels:history,groups:history,im:history,mpim:history,users.profile:write,users:write,dnd:write&scope=commands&redirect_uri=https://${process.env.APP_URL}/api/callback`}
+            iconBefore={<SlackIcon />}
+            style={{ textDecoration: "none" }}
+          >
+            Add to Slack
+          </Button>
+        )}
       </Stack>
     </Stack>
   );
