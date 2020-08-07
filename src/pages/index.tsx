@@ -89,6 +89,30 @@ const UserSettings = ({ user }) => {
           </Stack>
         </Stack>
 
+        {/* /lunch */}
+        <Stack direction="vertical" gap={4}>
+          <Stack direction="vertical" gap={3}>
+            <Heading size="paragraph">/lunch</Heading>
+            <Text css={{ color: "grays.400" }}>
+              Notify your colleagues that you're having lunch
+            </Text>
+          </Stack>
+          <Stack direction="vertical" gap={6}>
+            <FormField>
+              <FormLabel size={3}>Lunch duration</FormLabel>
+              <Input
+                onChange={(e) =>
+                  dispatch({
+                    lunchDuration: (e.target as HTMLInputElement).value,
+                  })
+                }
+                defaultValue={userSettings.lunchDuration}
+                placeholder={USER_INITIAL_SETTINGS.lunchDuration}
+              />
+            </FormField>
+          </Stack>
+        </Stack>
+
         {/* /bye */}
         <Stack direction="vertical" gap={4}>
           <Stack direction="vertical" gap={3}>
