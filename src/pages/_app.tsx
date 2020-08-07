@@ -3,7 +3,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@rudeland/ui";
 import { AuthProvider } from "src/providers/AuthProvider";
 
-export default ({ Component, pageProps, router }) => (
+const App = ({ Component, pageProps, router }) => (
   <>
     <Head>
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -16,7 +16,7 @@ export default ({ Component, pageProps, router }) => (
       />
       <meta name="theme-color" content="#fffff" />
 
-      <title>Slack Thread Commands</title>
+      <title>Slack Extended Commands</title>
     </Head>
     <ThemeProvider>
       <AuthProvider>
@@ -25,3 +25,5 @@ export default ({ Component, pageProps, router }) => (
     </ThemeProvider>
   </>
 );
+
+export default App;
